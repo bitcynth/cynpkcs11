@@ -78,7 +78,7 @@ func (signer *Signer) Public() crypto.PublicKey {
 
 func (signer *Signer) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error) {
 	// Sign the data in the input buffer
-	err := signer.context.ctx.SignInit(signer.context.session, []*pkcs11.Mechanism{pkcs11.NewMechanism(pkcs11.CKM_RSA_PKCS_PSS, nil)}, signer.context.privateKey)
+	err := signer.context.ctx.SignInit(signer.context.session, []*pkcs11.Mechanism{pkcs11.NewMechanism(pkcs11.CKM_SHA256_RSA_PKCS, nil)}, signer.context.privateKey)
 	if err != nil {
 		return nil, err
 	}
