@@ -89,7 +89,7 @@ func (signer *Signer) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts
 		return nil, err
 	}
 
-	sig, err := signer.context.ctx.Sign(signer.context.session, digest)
+	sig, err := signer.context.ctx.Sign(signer.context.session, t)
 	if err != nil {
 		return nil, err
 	}
