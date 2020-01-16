@@ -77,6 +77,12 @@ func (signer *Signer) Public() crypto.PublicKey {
 }
 
 func (signer *Signer) Sign(rand io.Reader, digest []byte, opts crypto.SignerOpts) ([]byte, error) {
+	// AAAAAH, thank you https://github.com/ThalesIgnite/crypto11/blob/c6ebc96bc6afb51f4ba6cf87e8085421eaafdd3a/rsa.go#L285
+	oid := []byte{0x30, 0x31, 0x30, 0x0d, 0x06, 0x09, 0x60, 0x86, 0x48, 0x01, 0x65, 0x03, 0x04, 0x02, 0x01, 0x05, 0x00, 0x04, 0x20}
+	t := make([]byte, len(oid)+len(digest))
+	copy(t[0:len(oid)], oid)
+	copy(t[len(oid):], digest)
+
 	// Sign the data in the input buffer
 	err := signer.context.ctx.SignInit(signer.context.session, []*pkcs11.Mechanism{pkcs11.NewMechanism(pkcs11.CKM_RSA_PKCS, nil)}, signer.context.privateKey)
 	if err != nil {
